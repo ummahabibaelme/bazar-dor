@@ -1,0 +1,1 @@
+export default function ProductSkeleton({ count = 8 }: { count?: number }) { return <div className="product-grid">{Array.from({length:count}).map((_,i)=><div key={i} className="surface p-4"><div className="skeleton h-11 w-11"/><div className="skeleton h-4 w-3/4 mt-4"/><div className="skeleton h-3 w-1/2 mt-2"/><div className="skeleton h-8 w-full mt-5"/></div>)}</div>; }
