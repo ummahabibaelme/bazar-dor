@@ -1,3 +1,4 @@
+
 import { betterAuth } from 'better-auth';
 import { drizzleAdapter } from 'better-auth/adapters/drizzle';
 import { drizzle } from 'drizzle-orm/node-postgres';
@@ -11,8 +12,8 @@ export const auth = betterAuth({
   appName: 'বাজার দর',
   baseURL: process.env.BETTER_AUTH_URL || 'http://localhost:3000',
   trustedOrigins: [
-    process.env.BETTER_AUTH_URL || 'http://localhost:3000',
     'http://localhost:3000',
+    'https://bazar-dor-bice.vercel.app',
   ],
   secret: process.env.BETTER_AUTH_SECRET,
   database: drizzleAdapter(db, {
@@ -24,8 +25,12 @@ export const auth = betterAuth({
       verification: schema.verification,
     },
   }),
-  emailAndPassword: { enabled: true },
-  user: { additionalFields: {} },
+  emailAndPassword: {
+    enabled: true,
+  },
+  user: {
+    additionalFields: {},
+  },
   socialProviders: {
     ...(process.env.GOOGLE_CLIENT_ID && process.env.GOOGLE_CLIENT_SECRET
       ? {
