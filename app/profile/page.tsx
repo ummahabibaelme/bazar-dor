@@ -1,0 +1,5 @@
+'use client';
+import Link from 'next/link';
+import { authClient } from '@/lib/auth-client';
+import ProtectedGate from '@/components/protected-gate';
+export default function ProfilePage(){const {data:session}=authClient.useSession();return <ProtectedGate><div className="container-main py-10 min-h-[55vh]"><div className="surface max-w-2xl mx-auto p-6 sm:p-8"><p className="text-sm text-[#16834a] font-semibold">আমার অ্যাকাউন্ট</p><h1 className="text-3xl font-bold mt-2">প্রোফাইল</h1><div className="mt-7 flex items-center gap-4"><div className="grid place-items-center w-16 h-16 rounded-full bg-[#e6f5e9] text-2xl">{session?.user?.image?<img src={session.user.image} alt="প্রোফাইল" className="w-16 h-16 rounded-full object-cover"/>:'👤'}</div><div><h2 className="font-bold text-lg">{session?.user?.name}</h2><p className="muted text-sm">{session?.user?.email}</p></div></div><div className="mt-7 border-t border-[#edf1ed] pt-5"><p className="text-sm text-[#7d897f]">আপনার নাম পরিবর্তন করতে চাইলে নিচের বাটনে ক্লিক করুন।</p><Link href="/profile/update" className="btn-primary mt-4">তথ্য আপডেট করুন</Link></div></div></div></ProtectedGate>}

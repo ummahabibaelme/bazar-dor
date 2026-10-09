@@ -1,0 +1,8 @@
+'use client';
+import { useEffect, useState } from 'react';
+import { useRouter } from 'next/navigation';
+import Link from 'next/link';
+import { authClient } from '@/lib/auth-client';
+import ProtectedGate from '@/components/protected-gate';
+import toast from 'react-hot-toast';
+export default function UpdateProfilePage(){const router=useRouter();const {data:session}=authClient.useSession();const [name,setName]=useState('');const [busy,setBusy]=useState(false);useEffect(()=>{if(session?.user?.name)setName(session.user.name)},[session?.user?.name]);const submit=async(e:React.FormEvent)=>{e.preventDefault();if(name.trim().length<2){toast.error('নাম কমপক্ষে ২ অক্ষরের হতে হবে');return}setBusy(true);const {error}=await authClient.updateUser({name:name.trim()});setBusy(false);if(error){toast.error(error.message||'তথ্য আপডেট করা যায়নি');return}toast.success('প্রোফাইল আপডেট হয়েছে');router.push('/profile');router.refresh()};return <ProtectedGate><div className="container-main py-10 min-h-[55vh]"><div className="surface max-w-xl mx-auto p-6 sm:p-8"><Link href="/profile" className="text-sm text-[#16834a]">← প্রোফাইলে ফিরে যান</Link><h1 className="text-2xl font-bold mt-4">তথ্য আপডেট করুন</h1><p className="muted text-sm mt-1">আপনার অ্যাকাউন্টের নাম পরিবর্তন করুন।</p><form onSubmit={submit} className="mt-6"><label className="block text-sm font-semibold">নাম<input value={name} onChange={e=>setName(e.target.value)} required minLength={2} className="mt-2 w-full rounded-xl border border-[#dce6dc] px-4 py-3 outline-none focus:border-[#16834a]"/></label><button disabled={busy} className="btn-primary mt-5 w-full">{busy?'আপডেট হচ্ছে…':'তথ্য আপডেট করুন'}</button></form></div></div></ProtectedGate>}
